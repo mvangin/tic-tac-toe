@@ -1,0 +1,20 @@
+
+.gameboard {
+    width: 500px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3, 1fr);
+    margin-top: 100px;
+    background: black;
+    grid-gap: 5px;
+}
+
+.boardSquare {
+    height: 100px;
+    background: rgb(245, 243, 243);
+}
+
+.playerChange {
+    
+}
