@@ -13,8 +13,26 @@
 .boardSquare {
     height: 100px;
     background: rgb(245, 243, 243);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
 }
 
-.playerChange {
-    
+.playerTitle {
+    font-size: 30px;
+    padding: 10px;
+}
+
+.buttonWrapper {
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+button {
+    padding: 10px;
+    border: solid grey 1px;
+    border-radius: 5px;
 }
