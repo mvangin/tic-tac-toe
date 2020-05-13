@@ -6,28 +6,87 @@ var gameBoard = (function () {
     const playerTitle = document.querySelector('.playerTitle');
 
 
-    var gameBoard = [];
+    var gameBoard = ["", "", "",
+                     "", "", "",
+                    "", "", ""];
 
-    var player = (playerName) => {
+    var player = (playerName, playerSymbol) => {
         const nameText = playerName + " is now taking their turn";
-        return { playerName, nameText};
+
+        return { playerName, nameText, playerSymbol };
     }
 
-    const player1 = player("player1");
-    const player2 = player("player2")
+    const player1 = player("player1", "X");
+    const player2 = player("player2", "0");
+
     let currentPlayer = player1;
+
+    function gameBoardFunc() {
+
+        let i = 0
+        boardSquares.forEach((item) => {
+            item.dataset.gridValue = i;
+            i++;
+        });
+    }
+
+    gameBoardFunc();
+
+
+    function updateGameBoard() {
+        let i = 0
+        boardSquares.forEach((item) => {
+            item.textContent = gameBoard[i];
+            i++;
+        });
+
+        if (!gameBoard.includes("")) {
+            startGame.style.display = "inline";
+            determineWinner();
+        }
+    }
+
+
+    function determineWinner() {
+        
+        let players = [player1, player2]
+
+        players.forEach( (player) => { 
+            const winningCombo  = player.playerSymbol + player.playerSymbol + player.playerSymbol;
+        if (((gameBoard[0] + gameBoard[1] + gameBoard[2]) == winningCombo) || 
+            ((gameBoard[3] + gameBoard[4] + gameBoard[5]) == winningCombo) || 
+            ((gameBoard[6] + gameBoard[7] + gameBoard[8]) ==winningCombo)  ||  
+            ((gameBoard[0] + gameBoard[3] + gameBoard[6]) == winningCombo) || 
+            ((gameBoard[1] + gameBoard[4] + gameBoard[7]) == winningCombo) ||
+            ((gameBoard[2] + gameBoard[5] + gameBoard[8]) == winningCombo) || 
+            ((gameBoard[0] + gameBoard[4] + gameBoard[8]) == winningCombo) || 
+            ((gameBoard[2] + gameBoard[4] + gameBoard[6]) == winningCombo)) {
+            playerTitle.textContent = player.playerName + " is the winner!";
+            
+        }
+    });
+
+ 
+    }
+
+    function clearGame() {
+        gameBoard = ["", "", "",
+            "", "", "",
+            "", "", ""];
+        currentPlayer = player1;
+        updateGameBoard();
+    }
+
 
 
     startGame.addEventListener("click", () => {
         startGame.style.display = "none";
         playerTitle.textContent = player1.nameText;
-        playerColor();
+        clearGame();
+        playerPress();
+
     });
 
-    playerChoice.addEventListener("click", () => {
-        changePlayer();
-        playerColor()
-    });
 
     function changePlayer() {
         if (currentPlayer == player1) {
@@ -36,25 +95,32 @@ var gameBoard = (function () {
         } else {
             currentPlayer = player1;
             playerTitle.textContent = player1.nameText;
-
         }
-        playerColor();
     }
 
-    function playerColor() {
+    function playerPress() {
         boardSquares.forEach((item) => {
             item.addEventListener("click", (e) => {
-                boardSquarePress(e);
+                playerEntry(e);
             });
         });
     }
 
-    function boardSquarePress(e) {
-        if (currentPlayer == player1) {
-            e.target.textContent = "X";
-        } else {
-            e.target.textContent = "O";
+    function playerEntry(e) {
+
+        let index = e.target.dataset.gridValue;
+        if (gameBoard[index] == "") {
+            if (currentPlayer == player1) {
+                gameBoard[index] = "X";
+            } else {
+                gameBoard[index] = "0";
+            }
+            changePlayer();
+            determineWinner();
+
         }
+
+        updateGameBoard();
     }
 
 
