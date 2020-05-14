@@ -29,6 +29,11 @@ body {
     padding: 10px;
 }
 
+.winner {
+    font-size: 50px;
+    padding: 10px;
+}
+
 .buttonWrapper {
     width: 500px;
     margin: 0 auto;
