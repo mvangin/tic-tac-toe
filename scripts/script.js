@@ -3,9 +3,9 @@ var gameBoard = (function () {
     const boardSquares = document.querySelectorAll('.boardSquare');
     const playerChoice = document.querySelector('.playerChange')
     const startGame = document.querySelector('.startGame')
-    const playerTitle = document.querySelector('.playerTitle');
     const winner = document.querySelector('.winner');
-
+    const player1Div = document.querySelector('.player1');
+    const player2Div = document.querySelector('.player2');
 
 
     var gameBoard = ["", "", "",
@@ -13,9 +13,7 @@ var gameBoard = (function () {
         "", "", ""];
 
     var player = (playerName, playerSymbol) => {
-        const nameText = playerName + " is now taking their turn";
-
-        return { playerName, nameText, playerSymbol };
+        return { playerName, playerSymbol };
     }
 
   
@@ -61,7 +59,6 @@ var gameBoard = (function () {
                 ((gameBoard[0] + gameBoard[4] + gameBoard[8]) == winningCombo) ||
                 ((gameBoard[2] + gameBoard[4] + gameBoard[6]) == winningCombo)) {
                 winner.textContent = player.playerName + " is the winner!";
-                playerTitle.textContent = "";
                 startGame.style.display = "inline";
                 removePress();
 
@@ -70,7 +67,6 @@ var gameBoard = (function () {
 
         if (!gameBoard.includes("") && winner.textContent == "") {
             winner.textContent = "Its a tie!";
-            playerTitle.textContent = "";
             startGame.style.display = "inline";
             removePress();
         }
@@ -90,7 +86,6 @@ var gameBoard = (function () {
 
         startGame.addEventListener("click", () => {
             startGame.style.display = "none";
-            playerTitle.textContent = player1.nameText;
             clearGame();
             playerPress();
 
@@ -100,10 +95,13 @@ var gameBoard = (function () {
         function changePlayer() {
             if (currentPlayer == player1) {
                 currentPlayer = player2;
-                playerTitle.textContent = player2.nameText;
+                player1Div.classList.add("currentPlayer");
+                player2Div.classList.remove("currentPlayer");
+
             } else {
                 currentPlayer = player1;
-                playerTitle.textContent = player1.nameText;
+                player2Div.classList.add("currentPlayer");
+                player1Div.classList.remove("currentPlayer");
             }
         }
 

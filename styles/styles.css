@@ -1,26 +1,47 @@
+
+
 body {
-    background: rgb(245, 243, 243);
+    padding: 0px;
+    margin: 0px;
+    background: grey;
+}
+
+.title {
+    width: 400px;
+    margin: 0 auto;
+    font-size: 30px;
+    padding: 0px;
+}
+
+h1 {
+    padding: 5px;
+    margin: 0px;
 }
 
 
+
 .gameboard {
+   
+    padding: 10px;
+    border-radius: 5px;
     width: 500px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3,1fr);
     grid-template-rows: repeat(3, 1fr);
-    margin-top: 100px;
-    background: black;
     grid-gap: 5px;
+ 
+
 }
 
 .boardSquare {
     height: 100px;
-    background: rgb(245, 243, 243);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 40px;
+    background: rgb(218, 215, 215);
+    z-index: 40;
 }
 
 
@@ -45,4 +66,28 @@ button {
     padding: 10px;
     border: solid grey 1px;
     border-radius: 5px;
+}
+
+
+.player {
+    display: flex;
+    width:150px;
+    height:100px;
+    border: solid black 2px;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+
+}
+
+.currentPlayer {
+    background: rgb(10, 126, 10);
+}
+
+.players {
+    margin: 0 auto;
+    display: flex;
+    width: 400px;
+    justify-content: space-between;
+
 }
