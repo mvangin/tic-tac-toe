@@ -17,8 +17,6 @@ h1 {
     margin: 0px;
 }
 
-
-
 .gameboard {
    
     padding-top: 20px;
@@ -78,8 +76,6 @@ button {
     justify-content: center;
     align-items: center;
     font-size: 30px;
-
-
 }
 
 .currentPlayer {

@@ -106,13 +106,11 @@ var gameBoard = (function () {
     function changePlayer() {
         if (currentPlayer == player1) {
             currentPlayer = player2;
-            player1Div.classList.add("currentPlayer");
-            player2Div.classList.remove("currentPlayer");
+
 
         } else {
             currentPlayer = player1;
-            player2Div.classList.add("currentPlayer");
-            player1Div.classList.remove("currentPlayer");
+
         }
     }
 
@@ -136,8 +134,12 @@ var gameBoard = (function () {
         if (gameBoard[index] == "") {
             if (currentPlayer == player1) {
                 gameBoard[index] = "X";
+                player2Div.classList.add("currentPlayer");
+                player1Div.classList.remove("currentPlayer");
             } else {
                 gameBoard[index] = "0";
+                player1Div.classList.add("currentPlayer");
+                player2Div.classList.remove("currentPlayer");     
             }
             changePlayer();
 
