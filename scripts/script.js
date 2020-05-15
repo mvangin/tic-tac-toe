@@ -158,7 +158,6 @@ var gameBoard = (function () {
                 winner.textContent = player.playerName + " is the winner!";
                 playersWrapper.style.display = "none";
                 startButtons.style.display = "flex";
-                ai = false;
                 removePress();
 
 
@@ -178,6 +177,7 @@ var gameBoard = (function () {
     changePlayers.addEventListener("click", () => {
         playerNamesWrapper.style.display = "block";
         winner.textContent = "";
+        ai=false;
 
     });
 
