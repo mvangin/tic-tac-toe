@@ -80,6 +80,7 @@ button {
 }
 
 .currentPlayer {
+    transition: 1s;
     background: rgb(38, 100, 158);
 }
 
