@@ -11,31 +11,52 @@ var gameBoard = (function () {
     const changePlayers = document.querySelector('.changePlayers');
 
 
-
-
     var gameBoard = ["", "", "",
         "", "", "",
         "", "", ""];
 
-    var player = (playerName, playerSymbol) => {
-        return { playerName, playerSymbol };
-    }
-
-
-    let player1 = player("player1", "X");
-    let player2 = player("player2", "0");
-    let currentPlayer = player1;
-
-    function gameBoardFunc() {
-
+    const gameBoardFunc = (() => {
         let i = 0
         boardSquares.forEach((item) => {
             item.dataset.gridValue = i;
             i++;
         });
+    })();
+
+    var PlayerFactory = (playerName, playerSymbol) => {
+        return { playerName, playerSymbol };
     }
 
-    gameBoardFunc();
+    startGame.addEventListener("click", () => {
+        initializeGame();
+    });
+
+
+    function initializeGame() {
+        const player1NameEle = document.querySelector('#player1NameEle');
+        const player2NameEle = document.querySelector('#player2NameEle');
+
+        winner.textContent = "";
+        gameBoard = ["", "", "",
+            "", "", "",
+            "", "", ""];
+        startButtons.style.display = "none";
+        playerNamesWrapper.style.display = "none";
+        playersWrapper.style.display = "flex";
+
+        let player1Name = player1NameEle.value;
+        let player2Name = player2NameEle.value;
+        player1 = PlayerFactory(player1Name, "X");
+        player2 = PlayerFactory(player2Name, "0");
+        player1Div.textContent = player1.playerName;
+        player2Div.textContent = player2.playerName;
+        currentPlayer = player1;
+        player2Div.classList.remove("currentPlayer");
+        player1Div.classList.add("currentPlayer");
+
+        updateGameBoard();
+        playerPress();
+    }
 
 
     function updateGameBoard() {
@@ -47,6 +68,42 @@ var gameBoard = (function () {
     }
 
 
+    function playerPress() {
+        boardSquares.forEach((item) => {
+            item.addEventListener("click", playerEntry, true);
+        });
+    }
+
+    function removePress() {
+        boardSquares.forEach((item) => {
+            item.removeEventListener("click", playerEntry, true);
+
+        })
+    }
+
+
+    function playerEntry(e) {
+
+        let index = e.target.dataset.gridValue;
+        if (gameBoard[index] == "") {
+            if (currentPlayer == player1) {
+                gameBoard[index] = "X";
+                player2Div.classList.add("currentPlayer");
+                player1Div.classList.remove("currentPlayer");
+            } else {
+                gameBoard[index] = "0";
+                player1Div.classList.add("currentPlayer");
+                player2Div.classList.remove("currentPlayer");
+            }
+            changePlayer();
+
+
+        }
+        updateGameBoard(index);
+        determineWinner();
+
+
+    }
     function determineWinner() {
 
         let players = [player1, player2];
@@ -78,39 +135,6 @@ var gameBoard = (function () {
     }
 
 
-    function initializeGame() {
-        const player1NameEle = document.querySelector('#player1NameEle');
-        const player2NameEle = document.querySelector('#player2NameEle');
-
-        winner.textContent = "";
-        gameBoard = ["", "", "",
-            "", "", "",
-            "", "", ""];
-        startButtons.style.display = "none";
-        playerNamesWrapper.style.display = "none";
-        playersWrapper.style.display = "flex";
-
-        let player1Name = player1NameEle.value;
-        let player2Name = player2NameEle.value;
-        player1 = player(player1Name, "X");
-        player2 = player(player2Name, "0");
-        player1Div.textContent = player1.playerName;
-        player2Div.textContent = player2.playerName;
-        currentPlayer = player1;
-        player2Div.classList.remove("currentPlayer");
-        player1Div.classList.add("currentPlayer");
-        
-        updateGameBoard();
-        playerPress();
-    }
-
-
-
-    startGame.addEventListener("click", () => {
-        initializeGame();
-
-    });
-
     changePlayers.addEventListener("click", () => {
         playerNamesWrapper.style.display = "block";
         winner.textContent = "";
@@ -127,43 +151,11 @@ var gameBoard = (function () {
 
         }
     }
-
-    function playerPress() {
-        boardSquares.forEach((item) => {
-            item.addEventListener("click", playerEntry, true);
-        });
-    }
-
-    function removePress() {
-        boardSquares.forEach((item) => {
-            item.removeEventListener("click", playerEntry, true);
-
-        })
-    }
+   
 
 
-    function playerEntry(e) {
-
-        let index = e.target.dataset.gridValue;
-        if (gameBoard[index] == "") {
-            if (currentPlayer == player1) {
-                gameBoard[index] = "X";
-                player2Div.classList.add("currentPlayer");
-                player1Div.classList.remove("currentPlayer");
-            } else {
-                gameBoard[index] = "0";
-                player1Div.classList.add("currentPlayer");
-                player2Div.classList.remove("currentPlayer");     
-            }
-            changePlayer();
 
 
-        }
-        updateGameBoard(index);
-        determineWinner();
-
-
-    }
 
 
 }());
