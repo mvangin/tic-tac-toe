@@ -39,16 +39,18 @@ h1 {
 }
 
 
+
+
+.winner {
+    font-size: 50px;
+    padding: 10px;
+}
+
 .textWrapper {
     width: 500px;
     margin: 0 auto;
     padding: 20px;
     text-align: center;
-}
-
-.winner {
-    font-size: 50px;
-    padding: 10px;
 }
 
 button {
@@ -61,13 +63,23 @@ button {
 
 .playerNamesWrapper {
     display: none;
+    width: 400px;
+    margin: 0 auto;
+    text-align: left;
 }
+
 
 .playerNameInput {
     padding: 10px;
     margin-bottom: 10px;
+    text-align: center;
 }
 
+.aiToggle {
+    padding:8px;
+    font-size: 20px;
+    background: rgb(177, 5, 5);
+}
 .startButtons {
     width: 400px;
     display: flex;

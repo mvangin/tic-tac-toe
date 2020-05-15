@@ -1,4 +1,3 @@
-
 var gameBoard = (function () {
     const boardSquares = document.querySelectorAll('.boardSquare');
     const startGame = document.querySelector('.startGame')
@@ -9,12 +8,15 @@ var gameBoard = (function () {
     const playersWrapper = document.querySelector('.playersWrapper');
     const startButtons = document.querySelector('.startButtons');
     const changePlayers = document.querySelector('.changePlayers');
+    const aiToggle = document.querySelector('.aiToggle');
+
 
 
     var gameBoard = ["", "", "",
         "", "", "",
         "", "", ""];
 
+    let ai = false;
     const gameBoardFunc = (() => {
         let i = 0
         boardSquares.forEach((item) => {
@@ -28,6 +30,11 @@ var gameBoard = (function () {
     }
 
     startGame.addEventListener("click", () => {
+        initializeGame();
+    });
+
+    aiToggle.addEventListener("click", () => {
+        ai = true;
         initializeGame();
     });
 
@@ -45,7 +52,15 @@ var gameBoard = (function () {
         playersWrapper.style.display = "flex";
 
         let player1Name = player1NameEle.value;
-        let player2Name = player2NameEle.value;
+        let player2Name;
+
+        if (ai == true) {
+            player2Name = "AI"
+        } else {
+            player2Name = player2NameEle.value;
+        }
+
+
         player1 = PlayerFactory(player1Name, "X");
         player2 = PlayerFactory(player2Name, "0");
         player1Div.textContent = player1.playerName;
@@ -74,6 +89,21 @@ var gameBoard = (function () {
         });
     }
 
+    function aiMove() {
+        let aiOptions = [];
+        for (let index = 0; index < gameBoard.length; index++) {
+            if (gameBoard[index] == "") {
+                aiOptions.push(index);
+            }
+        }
+        let numChoices = aiOptions.length;
+        let aiChoice = Math.floor(Math.random() * Math.floor(numChoices));
+
+        gameBoard[aiOptions[aiChoice]] = "0";
+    }
+
+
+
     function removePress() {
         boardSquares.forEach((item) => {
             item.removeEventListener("click", playerEntry, true);
@@ -85,25 +115,32 @@ var gameBoard = (function () {
     function playerEntry(e) {
 
         let index = e.target.dataset.gridValue;
-        if (gameBoard[index] == "") {
-            if (currentPlayer == player1) {
-                gameBoard[index] = "X";
-                player2Div.classList.add("currentPlayer");
-                player1Div.classList.remove("currentPlayer");
-            } else {
-                gameBoard[index] = "0";
-                player1Div.classList.add("currentPlayer");
-                player2Div.classList.remove("currentPlayer");
+        if (!ai) {
+            if (gameBoard[index] == "") {
+                if (currentPlayer == player1) {
+                    gameBoard[index] = "X";
+                    player2Div.classList.add("currentPlayer");
+                    player1Div.classList.remove("currentPlayer");
+                } else {
+                    gameBoard[index] = "0";
+                    player1Div.classList.add("currentPlayer");
+                    player2Div.classList.remove("currentPlayer");
+                }
+                changePlayer();
+                updateGameBoard(index);
+                determineWinner();
             }
-            changePlayer();
-
-
+        } else {
+            if (gameBoard[index] == "") {
+                gameBoard[index] = "X";
+                aiMove();
+            }
         }
         updateGameBoard(index);
         determineWinner();
 
-
     }
+
     function determineWinner() {
 
         let players = [player1, player2];
@@ -121,7 +158,9 @@ var gameBoard = (function () {
                 winner.textContent = player.playerName + " is the winner!";
                 playersWrapper.style.display = "none";
                 startButtons.style.display = "flex";
+                ai = false;
                 removePress();
+
 
             }
         });
@@ -130,6 +169,7 @@ var gameBoard = (function () {
             winner.textContent = "Its a tie!";
             playersWrapper.style.display = "none";
             startButtons.style.display = "flex";
+            ai = false;
             removePress();
         }
     }
@@ -151,11 +191,6 @@ var gameBoard = (function () {
 
         }
     }
-   
-
-
-
-
 
 
 }());
