@@ -9,7 +9,7 @@ body {
     width: 100%;
     text-align: center;
     font-size: 30px;
-    padding-top:10px;
+ 
 }
 
 h1 {
@@ -37,9 +37,6 @@ h1 {
     background: rgb(218, 215, 215);
     z-index: 40;
 }
-
-
-
 
 .winner {
     font-size: 50px;
@@ -83,7 +80,7 @@ button {
 }
 
 .aiToggleRedBG {
-    background: rgb(177, 5, 5);
+    background: rgb(231, 27, 27);
 }
 .startButtons {
     width: 400px;
