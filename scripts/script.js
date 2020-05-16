@@ -9,6 +9,8 @@ var gameBoard = (function () {
     const startButtons = document.querySelector('.startButtons');
     const changePlayers = document.querySelector('.changePlayers');
     const aiToggle = document.querySelector('.aiToggle');
+    const aiToggleRedBG = document.querySelector('.aiToggleRedBG');
+
 
 
 
@@ -34,8 +36,12 @@ var gameBoard = (function () {
     });
 
     aiToggle.addEventListener("click", () => {
-        ai = true;
-        initializeGame();
+        aiToggle.classList.toggle("aiToggleRedBG"); 
+        if (ai == false) {
+            ai = true;
+        } else {
+            ai = false;
+        }
     });
 
 
@@ -90,6 +96,7 @@ var gameBoard = (function () {
     }
 
     function aiMove() {
+
         let aiOptions = [];
         for (let index = 0; index < gameBoard.length; index++) {
             if (gameBoard[index] == "") {
@@ -134,6 +141,7 @@ var gameBoard = (function () {
             if (gameBoard[index] == "") {
                 gameBoard[index] = "X";
                 aiMove();
+
             }
         }
         updateGameBoard(index);
@@ -168,7 +176,6 @@ var gameBoard = (function () {
             winner.textContent = "Its a tie!";
             playersWrapper.style.display = "none";
             startButtons.style.display = "flex";
-            ai = false;
             removePress();
         }
     }
@@ -177,8 +184,6 @@ var gameBoard = (function () {
     changePlayers.addEventListener("click", () => {
         playerNamesWrapper.style.display = "block";
         winner.textContent = "";
-        ai=false;
-
     });
 
 

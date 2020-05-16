@@ -9,16 +9,16 @@ body {
     width: 100%;
     text-align: center;
     font-size: 30px;
-    padding-top:15px;
+    padding-top:10px;
 }
 
 h1 {
-    padding: 5px;
+    padding: 0px;
     margin: 0px;
 }
 
 .gameboard {
-    padding-top: 20px;
+    padding-top: 0px;
     border-radius: 5px;
     width: 400px;
     margin: 0 auto;
@@ -71,13 +71,18 @@ button {
 
 .playerNameInput {
     padding: 10px;
+    width: 150px;
     margin-bottom: 10px;
     text-align: center;
 }
 
 .aiToggle {
     padding:8px;
-    font-size: 20px;
+    font-size: 15px;
+    background: rgb(229, 226, 226);
+}
+
+.aiToggleRedBG {
     background: rgb(177, 5, 5);
 }
 .startButtons {
