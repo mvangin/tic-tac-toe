@@ -36,7 +36,7 @@ var gameBoard = (function () {
     });
 
     aiToggle.addEventListener("click", () => {
-        aiToggle.classList.toggle("aiToggleRedBG"); 
+        aiToggle.classList.toggle("aiToggleRedBG");
         if (ai == false) {
             ai = true;
         } else {
@@ -140,7 +140,9 @@ var gameBoard = (function () {
         } else {
             if (gameBoard[index] == "") {
                 gameBoard[index] = "X";
-                aiMove();
+                aiMove()
+
+
 
             }
         }
