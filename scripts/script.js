@@ -167,20 +167,20 @@ var gameBoard = (function () {
                 ((gameBoard[2] + gameBoard[5] + gameBoard[8]) == winningCombo) ||
                 ((gameBoard[0] + gameBoard[4] + gameBoard[8]) == winningCombo) ||
                 ((gameBoard[2] + gameBoard[4] + gameBoard[6]) == winningCombo)) {
-                let textContent = player.playerName + " is the winner!";
-                endgame(textContent);
+                let winnerText = player.playerName + " is the winner!";
+                endgame(winnerText);
             }
         });
 
         if (!gameBoard.includes("") && winner.textContent == "") {
-            let textContent = "Its a tie!";
-            endgame(textContent);
+            let winnerText = "Its a tie!";
+            endgame(winnerText);
 
         }
     }
 
-    function endgame (textContent) {
-        winner.textContent = textContent;
+    function endgame (winnerText) {
+        winner.textContent = winnerText;
         playersWrapper.style.display = "none";
         startButtons.style.display = "flex";
         removePress();
