@@ -19,6 +19,7 @@ var gameBoard = (function () {
         "", "", ""];
 
     let ai = false;
+
     const gameBoardFunc = (() => {
         let i = 0
         boardSquares.forEach((item) => {
@@ -45,17 +46,13 @@ var gameBoard = (function () {
     });
 
 
+
     function initializeGame() {
+
+        clearGame();
+
         const player1NameEle = document.querySelector('#player1NameEle');
         const player2NameEle = document.querySelector('#player2NameEle');
-
-        winner.textContent = "";
-        gameBoard = ["", "", "",
-            "", "", "",
-            "", "", ""];
-        startButtons.style.display = "none";
-        playerNamesWrapper.style.display = "none";
-        playersWrapper.style.display = "flex";
 
         let player1Name = player1NameEle.value;
         let player2Name;
@@ -65,7 +62,6 @@ var gameBoard = (function () {
         } else {
             player2Name = player2NameEle.value;
         }
-
 
         player1 = PlayerFactory(player1Name, "X");
         player2 = PlayerFactory(player2Name, "0");
@@ -79,6 +75,15 @@ var gameBoard = (function () {
         playerPress();
     }
 
+    function clearGame() {
+        winner.textContent = "";
+        gameBoard = ["", "", "",
+            "", "", "",
+            "", "", ""];
+        startButtons.style.display = "none";
+        playerNamesWrapper.style.display = "none";
+        playersWrapper.style.display = "flex";
+    }
 
     function updateGameBoard() {
         let i = 0
@@ -141,9 +146,6 @@ var gameBoard = (function () {
             if (gameBoard[index] == "") {
                 gameBoard[index] = "X";
                 aiMove()
-
-
-
             }
         }
         updateGameBoard(index);
@@ -165,23 +167,24 @@ var gameBoard = (function () {
                 ((gameBoard[2] + gameBoard[5] + gameBoard[8]) == winningCombo) ||
                 ((gameBoard[0] + gameBoard[4] + gameBoard[8]) == winningCombo) ||
                 ((gameBoard[2] + gameBoard[4] + gameBoard[6]) == winningCombo)) {
-                winner.textContent = player.playerName + " is the winner!";
-                playersWrapper.style.display = "none";
-                startButtons.style.display = "flex";
-                removePress();
-
-
+                let textContent = player.playerName + " is the winner!";
+                endgame(textContent);
             }
         });
 
         if (!gameBoard.includes("") && winner.textContent == "") {
-            winner.textContent = "Its a tie!";
-            playersWrapper.style.display = "none";
-            startButtons.style.display = "flex";
-            removePress();
+            let textContent = "Its a tie!";
+            endgame(textContent);
+
         }
     }
 
+    function endgame (textContent) {
+        winner.textContent = textContent;
+        playersWrapper.style.display = "none";
+        startButtons.style.display = "flex";
+        removePress();
+    }
 
     changePlayers.addEventListener("click", () => {
         playerNamesWrapper.style.display = "block";
