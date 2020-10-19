@@ -11,8 +11,7 @@ var gameBoard = (function () {
     const aiToggle = document.querySelector('.aiToggle');
     const aiToggleRedBG = document.querySelector('.aiToggleRedBG');
 
-
-
+    let delay = 1000;
 
     var gameBoard = ["", "", "",
         "", "", "",
@@ -38,11 +37,7 @@ var gameBoard = (function () {
 
     aiToggle.addEventListener("click", () => {
         aiToggle.classList.toggle("aiToggleRedBG");
-        if (ai == false) {
-            ai = true;
-        } else {
-            ai = false;
-        }
+        ai = ai ? false : true
     });
 
 
@@ -57,14 +52,14 @@ var gameBoard = (function () {
         let player1Name = player1NameEle.value;
         let player2Name;
 
-        if (ai == true) {
-            player2Name = "AI"
+        if (ai) {
+            player2Name = player2NameEle.value + " (AI)"
         } else {
             player2Name = player2NameEle.value;
         }
 
-        player1 = PlayerFactory(player1Name, "X");
-        player2 = PlayerFactory(player2Name, "0");
+        player1 = PlayerFactory(player1Name, "0");
+        player2 = PlayerFactory(player2Name, "X");
         player1Div.textContent = player1.playerName;
         player2Div.textContent = player2.playerName;
         currentPlayer = player1;
@@ -85,10 +80,17 @@ var gameBoard = (function () {
         playersWrapper.style.display = "flex";
     }
 
-    function updateGameBoard() {
+    function updateGameBoard(aiIndex) {
         let i = 0
         boardSquares.forEach((item) => {
-            item.textContent = gameBoard[i];
+            if (i === aiIndex) {
+                setTimeout(() => {
+                    item.textContent = gameBoard[aiIndex];
+                }, delay)
+
+            } else {
+                item.textContent = gameBoard[i];
+            }
             i++;
         });
     }
@@ -110,8 +112,10 @@ var gameBoard = (function () {
         }
         let numChoices = aiOptions.length;
         let aiChoice = Math.floor(Math.random() * Math.floor(numChoices));
+        let aiIndex = aiOptions[aiChoice]
+        gameBoard[aiIndex] = player2.playerSymbol;
+        return aiIndex;
 
-        gameBoard[aiOptions[aiChoice]] = "0";
     }
 
 
@@ -119,7 +123,6 @@ var gameBoard = (function () {
     function removePress() {
         boardSquares.forEach((item) => {
             item.removeEventListener("click", playerEntry, true);
-
         })
     }
 
@@ -130,56 +133,67 @@ var gameBoard = (function () {
         if (!ai) {
             if (gameBoard[index] == "") {
                 if (currentPlayer == player1) {
-                    gameBoard[index] = "X";
+                    gameBoard[index] = player1.playerSymbol;
+                    determineWinner(player1)
                     player2Div.classList.add("currentPlayer");
                     player1Div.classList.remove("currentPlayer");
                 } else {
-                    gameBoard[index] = "0";
+                    gameBoard[index] = player2.playerSymbol;
+                    determineWinner(player2)
                     player1Div.classList.add("currentPlayer");
                     player2Div.classList.remove("currentPlayer");
                 }
+                updateGameBoard();
                 changePlayer();
-                updateGameBoard(index);
-                determineWinner();
+
             }
         } else {
             if (gameBoard[index] == "") {
-                gameBoard[index] = "X";
-                aiMove()
+                gameBoard[index] = player1.playerSymbol;
+                updateGameBoard();
+                let finishedGame = determineWinner(player1);
+
+                if (!finishedGame) {
+                    removePress();
+                    player2Div.classList.add("currentPlayer");
+                    player1Div.classList.remove("currentPlayer");
+                    let aiIndex = aiMove()
+                    updateGameBoard(aiIndex);
+                    setTimeout(() => {
+                        player1Div.classList.add("currentPlayer");
+                        player2Div.classList.remove("currentPlayer");
+                        playerPress()
+                        determineWinner(player2)
+                    }, delay)
+                }
             }
         }
-        updateGameBoard(index);
-        determineWinner();
 
     }
 
-    function determineWinner() {
+    function determineWinner(player) {
 
-        let players = [player1, player2];
-
-        players.forEach((player) => {
-            const winningCombo = player.playerSymbol + player.playerSymbol + player.playerSymbol;
-            if (((gameBoard[0] + gameBoard[1] + gameBoard[2]) == winningCombo) ||
-                ((gameBoard[3] + gameBoard[4] + gameBoard[5]) == winningCombo) ||
-                ((gameBoard[6] + gameBoard[7] + gameBoard[8]) == winningCombo) ||
-                ((gameBoard[0] + gameBoard[3] + gameBoard[6]) == winningCombo) ||
-                ((gameBoard[1] + gameBoard[4] + gameBoard[7]) == winningCombo) ||
-                ((gameBoard[2] + gameBoard[5] + gameBoard[8]) == winningCombo) ||
-                ((gameBoard[0] + gameBoard[4] + gameBoard[8]) == winningCombo) ||
-                ((gameBoard[2] + gameBoard[4] + gameBoard[6]) == winningCombo)) {
-                let winnerText = player.playerName + " is the winner!";
-                endgame(winnerText);
-            }
-        });
+        const winningCombo = player.playerSymbol + player.playerSymbol + player.playerSymbol;
+        if (((gameBoard[0] + gameBoard[1] + gameBoard[2]) == winningCombo) ||
+            ((gameBoard[3] + gameBoard[4] + gameBoard[5]) == winningCombo) ||
+            ((gameBoard[6] + gameBoard[7] + gameBoard[8]) == winningCombo) ||
+            ((gameBoard[0] + gameBoard[3] + gameBoard[6]) == winningCombo) ||
+            ((gameBoard[1] + gameBoard[4] + gameBoard[7]) == winningCombo) ||
+            ((gameBoard[2] + gameBoard[5] + gameBoard[8]) == winningCombo) ||
+            ((gameBoard[0] + gameBoard[4] + gameBoard[8]) == winningCombo) ||
+            ((gameBoard[2] + gameBoard[4] + gameBoard[6]) == winningCombo)) {
+            let winnerText = player.playerName + " is the winner!";
+            endgame(winnerText);
+            return true;
+        }
 
         if (!gameBoard.includes("") && winner.textContent == "") {
             let winnerText = "Its a tie!";
             endgame(winnerText);
-
         }
     }
 
-    function endgame (winnerText) {
+    function endgame(winnerText) {
         winner.textContent = winnerText;
         playersWrapper.style.display = "none";
         startButtons.style.display = "flex";
