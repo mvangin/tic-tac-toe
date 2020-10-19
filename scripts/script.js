@@ -58,8 +58,8 @@ var gameBoard = (function () {
             player2Name = player2NameEle.value;
         }
 
-        player1 = PlayerFactory(player1Name, "0");
-        player2 = PlayerFactory(player2Name, "X");
+        player1 = PlayerFactory(player1Name, "X");
+        player2 = PlayerFactory(player2Name, "0");
         player1Div.textContent = player1.playerName;
         player2Div.textContent = player2.playerName;
         currentPlayer = player1;
